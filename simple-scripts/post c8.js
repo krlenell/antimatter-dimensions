@@ -1,5 +1,6 @@
-const _maxGalaxy = 1
-const _maxBoost = 12
+let _maxGalaxy = 1
+let _maxBoost = 8
+let _sacTarget = 5
 
 const checkActive = (buttonType) => {
 	const div = document.getElementsByClassName(buttonType)
@@ -15,7 +16,8 @@ const checkActive = (buttonType) => {
 }
 
 const runner = () => {
-	sacrificeHandler(5)
+	sacrificeHandler(_sacTarget)
+	crunchHandler()
 	const dimBoost = checkActive('dimboost')
 	const galaxyBoost = checkActive('galaxy')
 	if(!dimBoost && !galaxyBoost){
@@ -57,6 +59,13 @@ const sacrificeHandler = (desiredSac) => {
 	return
 }
 
+const crunchHandler = () => {
+	const $crunchButton = document.getElementsByClassName('btn-big-crunch')[0]
+	if($crunchButton){
+		console.log('clicking crunch')
+		$crunchButton.click()
+	}
+}
 
 const parseNumberFromText = (str) => {
 	const num = str.match(/\d+/g)[0]
