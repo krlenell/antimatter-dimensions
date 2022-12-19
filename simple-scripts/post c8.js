@@ -1,35 +1,49 @@
+const _maxGalaxy = 1
+const _maxBoost = 12
+
 const checkActive = (buttonType) => {
 	const div = document.getElementsByClassName(buttonType)
 	if(!div[0]) {
-		console.log(`could not find ${buttonType} div`)
 		return false
 	}
 	const button = div[0].getElementsByTagName('button')[0]
 	if(!button){
-		console.log(`could not find ${buttonType} button`)
 		return false
 	}
 	if(button.classList.contains('o-primary-btn--disabled')) return false
 	return button
 }
 
-const dimBoostOrGalaxy = () => {
-	sacrificeHandler(10)
+const runner = () => {
+	sacrificeHandler(5)
 	const dimBoost = checkActive('dimboost')
-	if(!dimBoost){
+	const galaxyBoost = checkActive('galaxy')
+	if(!dimBoost && !galaxyBoost){
+		return
+	} else if (dimBoost && galaxyBoost){
+		if(getBoostCount('galaxy') >= _maxGalaxy){
+			return
+		}
+		console.log('galaxy boosting')
+		galaxyBoost.click()
+		return
+	} else if (dimBoost && !galaxyBoost){
+		if(getBoostCount('dimboost') >= _maxBoost){
+			return
+		}
+		console.log('dimension boosting')
+		dimBoost.click()
 		return
 	}
-	console.log('boosting dim')
-	dimBoost.click()
-	return
 }
 
 /*
 some function that gets sacrifices and keeps hitting max
 */
+
 const sacrificeHandler = (desiredSac) => {
 	const $sacrificeButton = document.getElementsByClassName('modes-container')[0]
-		.getElementsByTagName('button')[1]
+		?.getElementsByTagName('button')[1]
 	if(!$sacrificeButton){
 		console.log('sac not found')
 		return
@@ -49,7 +63,6 @@ const parseNumberFromText = (str) => {
 	return parseInt(num, 10)
 }
 
-
 const getBoostCount = (type) => {
 	const div = document.getElementsByClassName(type)
 	if(!div[0]){
@@ -64,4 +77,4 @@ const getBoostCount = (type) => {
 	return parseNumberFromText(header.textContent)
 }
 
-let boostInterval = setInterval(dimBoostOrGalaxy, 100)
+let boostInterval = setInterval(runner, 100)
